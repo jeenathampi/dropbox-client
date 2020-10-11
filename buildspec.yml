@@ -3,7 +3,6 @@ phases:
   pre_build:
     commands:
       - echo exporting env variables.....
-      - REACT_APP_USER_POOL_ID=$USER_POOL_ID
       - REACT_APP_USER_CLIENT_ID=$CLIENT_ID
       - echo $REACT_APP_USER_POOL_ID
       - echo Installing source NPM dependencies...
