@@ -1,10 +1,10 @@
 version: 0.1
 env:
-  pre_build:
+  variables:
     commands:
       - echo exporting env variables.....
-      - export REACT_APP_USER_POOL_ID=${USER_POOL_ID}
-      - export REACT_APP_USER_CLIENT_ID=${CLIENT_ID}
+      - REACT_APP_USER_POOL_ID=${USER_POOL_ID}
+      - REACT_APP_USER_CLIENT_ID=${CLIENT_ID}
       - echo $REACT_APP_USER_POOL_ID
 phases:
   pre_build:
