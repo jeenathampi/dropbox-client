@@ -2,9 +2,6 @@ version: 0.1
 phases:
   pre_build:
     commands:
-      - echo exporting env variables.....
-      - echo $REACT_APP_CLIENT_ID
-      - echo $REACT_APP_USER_POOL_ID
       - echo Installing source NPM dependencies...
       - npm install
   build:
