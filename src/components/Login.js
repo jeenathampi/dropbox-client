@@ -20,6 +20,7 @@ function Login() {
 
     user.authenticateUser(authDetails, {
       onSuccess: (data) => {
+        window.location.href = "/dashboard";
         console.log("onSuccess:", data);
       },
       onFailure: (err) => {
