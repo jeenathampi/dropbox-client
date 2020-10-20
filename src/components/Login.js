@@ -1,71 +1,95 @@
-import React, { useState } from "react";
+import React, { Component } from "react";
 import { CognitoUser, AuthenticationDetails } from "amazon-cognito-identity-js";
 import UserPool from "../UserPool";
+import { connect } from "react-redux";
+import { login } from "../actions/securityAction";
 
-function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+class Login extends Component {
+  constructor() {
+    super();
+    this.state = {
+      email: "",
+      password: "",
+    };
+    this.onChange = this.onChange.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
+  }
 
-  const onSubmit = (event) => {
+  onChange(e) {
+    this.setState({
+      [e.target.name]: e.target.value,
+    });
+  }
+
+  onSubmit = (event) => {
     event.preventDefault();
     const user = new CognitoUser({
-      Username: email,
+      Username: this.state.email,
       Pool: UserPool,
     });
 
     const authDetails = new AuthenticationDetails({
-      Username: email,
-      Password: password,
+      Username: this.state.email,
+      Password: this.state.password,
     });
-
-    user.authenticateUser(authDetails, {
-      onSuccess: (data) => {
-        window.location.href = "/dashboard";
-        console.log("onSuccess:", data);
-      },
-      onFailure: (err) => {
-        console.error("onFailure:", err);
-      },
-      newPasswordRequired: (data) => {
-        console.log("newPasswordRequired:", data);
-      },
-    });
+    this.props.login(user, authDetails);
   };
 
-  return (
-    <div className="container">
-      <div className="row">
-        <div className="col-md-8 m-auto">
-          <h1 className="display-4 text-center">Login</h1>
-          <form onSubmit={onSubmit}>
-            <div className="form-group">
-              <input
-                type="email"
-                className="form-control"
-                placeholder="Email Address"
-                name="username"
-                value={email}
-                onChange={(event) => setEmail(event.target.value)}
-              />
-            </div>
-            <div className="form-group">
-              <input
-                type="password"
-                className="form-control"
-                placeholder="Password"
-                name="password"
-                value={password}
-                onChange={(event) => setPassword(event.target.value)}
-              />
-            </div>
-            <button type="submit" className="btn btn-primary btn-block">
-              Login
-            </button>
-          </form>
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.security.validToken) {
+      this.props.history.push("/dashboard");
+    }
+  }
+  checkIfError() {
+    if (Object.keys(this.props.errors).length !== 0) {
+      return (
+        <div className="alert alert-danger my-3" role="alert">
+          {this.props.errors.message}
+        </div>
+      );
+    }
+  }
+  render() {
+    return (
+      <div className="container">
+        <div className="row">
+          <div className="col-md-8 m-auto">
+            {this.checkIfError()}
+            <h1 className="display-4 text-center">Login</h1>
+            <form onSubmit={this.onSubmit}>
+              <div className="form-group">
+                <input
+                  type="email"
+                  className="form-control"
+                  placeholder="Email Address"
+                  name="email"
+                  value={this.state.email}
+                  onChange={this.onChange}
+                />
+              </div>
+              <div className="form-group">
+                <input
+                  type="password"
+                  className="form-control"
+                  placeholder="Password"
+                  name="password"
+                  value={this.state.password}
+                  onChange={this.onChange}
+                />
+              </div>
+              <button type="submit" className="btn btn-primary btn-block">
+                Login
+              </button>
+            </form>
+            <small>Dont have an account? </small>
+            <a href="/signup">SignUp</a>
+          </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  }
 }
-
-export default Login;
+function mapStateToProps({ security, errors }) {
+  return { security, errors };
+}
+export default connect(mapStateToProps, { login })(Login);

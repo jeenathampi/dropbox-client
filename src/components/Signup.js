@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { CognitoUserAttribute } from "amazon-cognito-identity-js";
 import UserPool from "../UserPool";
+import { useHistory } from "react-router-dom";
 
 function Signup() {
   const [firstName, setfirstName] = useState("");
@@ -24,12 +25,14 @@ function Signup() {
 
   attributeList.push(attributeFirstName);
   attributeList.push(attributeLastName);
-
+  let history = useHistory();
   const onSubmit = (event) => {
     event.preventDefault();
     UserPool.signUp(email, password, attributeList, null, (err, data) => {
       if (err) console.error(err);
-      console.log(data);
+      else {
+        history.push("/");
+      }
     });
   };
   return (
@@ -83,8 +86,6 @@ function Signup() {
               Submit
             </button>
           </form>
-          <small>Already have an account? </small>
-          <a href="/login">Login</a>
         </div>
       </div>
     </div>
