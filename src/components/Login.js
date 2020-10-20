@@ -81,7 +81,7 @@ class Login extends Component {
                 Login
               </button>
             </form>
-            <small>Dont have an account? </small>
+            <small>Don't have an account? </small>
             <a href="/signup">SignUp</a>
           </div>
         </div>
