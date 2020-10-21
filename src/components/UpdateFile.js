@@ -54,9 +54,14 @@ class UpdateFile extends Component {
     });
   }
   componentDidMount() {
-    const userId = Pool.getCurrentUser().getUsername();
-    const { id } = this.props.match.params;
-    this.props.getFile(userId, id, this.props.history);
+    const loggedIn = Pool.getCurrentUser();
+    if (loggedIn === null) {
+      this.props.history.push("/");
+    } else {
+      const userId = Pool.getCurrentUser().getUsername();
+      const { id } = this.props.match.params;
+      this.props.getFile(userId, id, this.props.history);
+    }
   }
   render() {
     return (

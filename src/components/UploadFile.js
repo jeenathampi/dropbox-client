@@ -12,6 +12,12 @@ class UploadFile extends Component {
     };
     this.onChange = this.onChange.bind(this);
   }
+  componentDidMount() {
+    const loggedIn = Pool.getCurrentUser();
+    if (loggedIn === null) {
+      this.props.history.push("/");
+    }
+  }
   onChange(e) {
     this.setState({
       [e.target.name]: e.target.value,

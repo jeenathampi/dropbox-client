@@ -8,20 +8,25 @@ import AdminView from "./AdminView";
 
 class Dashboard extends Component {
   componentDidMount() {
-    const username = Pool.getCurrentUser().getUsername();
-    const user = Pool.getCurrentUser();
-    let group = "";
-    if (user) {
-      user.getSession((err, session) => {
-        if (!err) {
-          group = session.getAccessToken().payload["cognito:groups"][0];
-        }
-      });
-    }
-    if (group === "AdminGroup") {
-      this.props.getAdminFiles();
+    const loggedIn = Pool.getCurrentUser();
+    if (loggedIn === null) {
+      this.props.history.push("/");
     } else {
-      this.props.getFiles(username);
+      const username = Pool.getCurrentUser().getUsername();
+      const user = Pool.getCurrentUser();
+      let group = "";
+      if (user) {
+        user.getSession((err, session) => {
+          if (!err) {
+            group = session.getAccessToken().payload["cognito:groups"][0];
+          }
+        });
+      }
+      if (group === "AdminGroup") {
+        this.props.getAdminFiles();
+      } else {
+        this.props.getFiles(username);
+      }
     }
   }
   checkIfError() {

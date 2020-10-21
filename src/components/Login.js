@@ -50,6 +50,8 @@ class Login extends Component {
     }
   }
   render() {
+    const user = UserPool.getCurrentUser();
+    console.log(user);
     return (
       <div className="container">
         <div className="row">
