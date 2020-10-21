@@ -23,6 +23,7 @@ class FileItem extends Component {
   }
 
   handleDelete(id, url, fileId) {
+    console.log(url);
     const params = {
       url: url,
       fileId: fileId,
@@ -40,10 +41,16 @@ class FileItem extends Component {
     const name = urlArray[urlArray.length - 1];
     return name.split(/-(.+)/)[1];
   }
+  getFileUrl(file) {
+    const urlArray = file.fileUrl.split("/");
+    const url = process.env.REACT_APP_S3_URL + urlArray[urlArray.length - 1];
+    return url;
+  }
   render() {
     const { file } = this.props;
     const filename = this.trimFileName(file);
     const username = Pool.getCurrentUser().getUsername();
+    const url = this.getFileUrl(file);
     return (
       <div className="card mb-3 bg-light">
         <div className="row no-gutters">
@@ -91,7 +98,7 @@ class FileItem extends Component {
                     onClick={this.handleDelete.bind(
                       this,
                       username,
-                      file.fileUrl,
+                      url,
                       file.fileId
                     )}
                   >
