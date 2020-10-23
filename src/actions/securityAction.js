@@ -16,7 +16,7 @@ export const login = (user, authDetails) => async (dispatch) => {
   });
 };
 
-export const logout = () => (dipatch) => {
+export const logout = () => (dispatch) => {
   const user = Pool.getCurrentUser();
   if (user) {
     user.signOut();
