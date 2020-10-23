@@ -8,6 +8,7 @@ function Signup() {
   const [lastName, setlasttName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [hasError, setHasError] = useState("");
 
   var dataFirstName = {
     Name: "custom:firstName",
@@ -26,19 +27,33 @@ function Signup() {
   attributeList.push(attributeFirstName);
   attributeList.push(attributeLastName);
   let history = useHistory();
+  // let hasError = "";
   const onSubmit = (event) => {
     event.preventDefault();
     UserPool.signUp(email, password, attributeList, null, (err, data) => {
-      if (err) console.error(err);
-      else {
+      if (err) {
+        console.error(err.message);
+        setHasError(err.message);
+        console.log(hasError);
+      } else {
         history.push("/");
       }
     });
+  };
+  const checkIfError = () => {
+    if (hasError) {
+      return (
+        <div className="alert alert-danger my-3" role="alert">
+          {hasError}
+        </div>
+      );
+    }
   };
   return (
     <div className="container">
       <div className="row">
         <div className="col-md-8 m-auto">
+          {checkIfError()}
           <h1 className="display-4 text-center">Sign Up</h1>
           <p className="lead text-center">Create your Account</p>
           <form onSubmit={onSubmit}>
