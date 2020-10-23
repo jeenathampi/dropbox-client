@@ -5,6 +5,7 @@ export const login = (user, authDetails) => async (dispatch) => {
   user.authenticateUser(authDetails, {
     onSuccess: (data) => {
       dispatch({ type: SET_CURRENT_USER, payload: data });
+      dispatch({ type: GET_ERRORS, payload: {} });
     },
     onFailure: (err) => {
       dispatch({ type: GET_ERRORS, payload: err });
@@ -21,4 +22,5 @@ export const logout = () => (dipatch) => {
     user.signOut();
   }
   dipatch({ type: SET_CURRENT_SESSION });
+  dispatch({ type: GET_ERRORS, payload: {} });
 };

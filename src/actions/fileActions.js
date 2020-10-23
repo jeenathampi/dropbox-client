@@ -7,6 +7,7 @@ export const getFiles = (userId) => async (dispatch) => {
   );
 
   dispatch({ type: GET_FILES, payload: res.data });
+  dispatch({ type: GET_ERRORS, payload: {} });
 };
 
 export const deleteFile = (id, params) => async (dispatch) => {
@@ -14,6 +15,7 @@ export const deleteFile = (id, params) => async (dispatch) => {
     params: params,
   });
   dispatch({ type: DELETE_FILE, payload: id });
+  dispatch({ type: GET_ERRORS, payload: {} });
 };
 
 export const uploadFile = (userId, formData, history) => async (dispatch) => {
@@ -41,6 +43,7 @@ export const getFile = (userid, fileid, history) => async (dispatch) => {
     );
 
     dispatch({ type: GET_FILE, payload: res.data });
+    dispatch({ type: GET_ERRORS, payload: {} });
   } catch (error) {
     history.push("/dashboard");
   }
@@ -63,4 +66,5 @@ export const getAdminFiles = () => async (dispatch) => {
   const res = await axios.get(process.env.REACT_APP_ADMIN_FILES);
 
   dispatch({ type: GET_FILES, payload: res.data });
+  dispatch({ type: GET_ERRORS, payload: {} });
 };
