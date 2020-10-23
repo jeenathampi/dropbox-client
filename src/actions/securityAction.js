@@ -21,6 +21,6 @@ export const logout = () => (dispatch) => {
   if (user) {
     user.signOut();
   }
-  dipatch({ type: SET_CURRENT_SESSION });
+  dispatch({ type: SET_CURRENT_SESSION });
   dispatch({ type: GET_ERRORS, payload: {} });
 };
