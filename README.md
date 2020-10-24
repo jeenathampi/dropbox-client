@@ -1,5 +1,6 @@
 In this project a user can upload, download and update files only in their profile. An admin profile which can see all the files uploaded by every user.
 
+This is only the front-end portion of the project
 Create the project with create-react-app projectname
 
 In the project directory, you can run:
